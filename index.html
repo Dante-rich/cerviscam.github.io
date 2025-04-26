@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CerviScan - Detección Temprana de Cáncer Cervicouterino</title>
+    <style>
+        /* Estilos generales para toda la aplicación */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Contenedor principal con gradiente azul profesional */
+        body {
+            background: linear-gradient(135deg, #1a3a8f 0%, #0a1f4d 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Encabezado de la aplicación */
+        header {
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Estilo para el logo y título principal */
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logo-container img {
+            height: 60px;
+            margin-right: 15px;
+        }
+
+        .app-title {
+            font-size: 2.5rem;
+            color: #1a3a8f;
+            font-weight: 700;
+        }
+
+        .app-subtitle {
+            font-size: 1.2rem;
+            color: #555;
+            margin-top: 5px;
+        }
+
+        /* Contenedor principal del contenido */
+        .main-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 30px auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        /* Sección de ilustración anatómica */
+        .illustration-section {
+            padding: 30px;
+            text-align: center;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .illustration-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Secciones de acción */
+        .action-section {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 20px;
+        }
+
+        .action-card {
+            flex: 1;
+            min-width: 300px;
+            margin: 15px;
+            padding: 25px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .action-card h3 {
+            color: #1a3a8f;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .action-card p {
+            color: #555;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        /* Botones de acción */
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #1a3a8f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: #0d2b6b;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        /* Formulario de expediente clínico */
+        .form-container {
+            padding: 30px;
+            background-color: #f8f9fa;
+        }
+
+        .form-section {
+            margin-bottom: 25px;
+        }
+
+        .form-section h3 {
+            color: #1a3a8f;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-right: -10px;
+            margin-left: -10px;
+        }
+
+        .form-col {
+            flex: 1;
+            padding: 0 10px;
+            min-width: 200px;
+        }
+
+        /* Sección de carga de archivos */
+        .file-upload-section {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #e9ecef;
+            border-radius: 8px;
+        }
+
+        .file-upload-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            border: 2px dashed #6c757d;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .file-upload-container:hover {
+            background-color: #e2e6ea;
+        }
+
+        .file-upload-icon {
+            font-size: 2rem;
+            color: #6c757d;
+            margin-bottom: 10px;
+        }
+
+        /* Sección de consentimiento */
+        .consent-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #e9ecef;
+            border-radius: 8px;
+        }
+
+        .consent-checkbox {
+            margin-right: 10px;
+        }
+
+        /* Pie de página */
+        footer {
+            width: 100%;
+            background-color: #0a1f4d;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: auto;
+        }
+
+        footer p {
+            margin: 5px 0;
+        }
+
+        /* Estilos responsivos */
+        @media (max-width: 768px) {
+            .app-title {
+                font-size: 2rem;
+            }
+
+            .action-card {
+                min-width: 100%;
+            }
+
+            .form-col {
+                min-width: 100%;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Encabezado de la aplicación -->
+    <header>
+        <div class="logo-container">
+            <!-- Logo de la aplicación (puede ser reemplazado por un SVG inline) -->
+            <svg width="60" height="60" viewBox="0 0 60 60">
+                <circle cx="30" cy="30" r="28" fill="#1a3a8f" stroke="#fff" stroke-width="2"/>
+                <path d="M20,30 Q30,15 40,30 T60,30" stroke="#fff" stroke-width="2" fill="none"/>
+                <circle cx="30" cy="30" r="10" fill="#fff"/>
+            </svg>
+            <h1 class="app-title">CerviScan</h1>
+        </div>
+        <p class="app-subtitle">Sistema Integral para la Detección Temprana de Cáncer Cervicouterino</p>
+    </header>
+
+    <!-- Contenedor principal -->
+    <div class="main-container">
+        <!-- Sección de ilustración anatómica -->
+        <section class="illustration-section">
+            <h2>Detección Temprana para Mejores Resultados</h2>
+            <div class="illustration-container">
+                <!-- Ilustración SVG del sistema reproductivo femenino con lupa -->
+                <svg width="600" height="400" viewBox="0 0 600 400">
+                    <!-- Sistema reproductivo femenino -->
+                    <g transform="translate(300, 180) scale(1.2)">
+                        <!-- Útero -->
+                        <path d="M0,-40 C-10,-50 -30,-50 -40,-40 C-60,-20 -60,0 -40,20 C-30,30 -10,30 0,20 C10,30 30,30 40,20 C60,0 60,-20 40,-40 C30,-50 10,-50 0,-40 Z"
+                              fill="#f8a6a6" stroke="#e63946" stroke-width="3"/>
+
+                        <!-- Interior del útero -->
+                        <path d="M0,-35 C-8,-43 -25,-43 -33,-35 C-50,-18 -50,0 -33,17 C-25,25 -8,25 0,17 C8,25 25,25 33,17 C50,0 50,-18 33,-35 C25,-43 8,-43 0,-35 Z"
+                              fill="#e63946" stroke="none"/>
+
+                        <!-- Cérvix -->
+                        <path d="M0,20 C-10,20 -20,25 -20,40 C-20,55 -10,70 0,70 C10,70 20,55 20,40 C20,25 10,20 0,20 Z"
+                              fill="#f8a6a6" stroke="#e63946" stroke-width="3"/>
+
+                        <!-- Canal cervical -->
+                        <path d="M0,25 C-5,25 -10,30 -10,40 C-10,50 -5,65 0,65 C5,65 10,50 10,40 C10,30 5,25 0,25 Z"
+                              fill="#e63946" stroke="none"/>
+
+                        <!-- Trompas de Falopio izquierda -->
+                        <path d="M-40,0 C-60,-10 -80,-5 -90,5 C-100,15 -110,10 -120,5"
+                              fill="none" stroke="#e63946" stroke-width="3" stroke-linecap="round"/>
+
+                        <!-- Trompas de Falopio derecha -->
+                        <path d="M40,0 C60,-10 80,-5 90,5 C100,15 110,10 120,5"
+                              fill="none" stroke="#e63946" stroke-width="3" stroke-linecap="round"/>
+
+                        <!-- Ovario izquierdo -->
+                        <ellipse cx="-120" cy="5" rx="15" ry="10" fill="#f8a6a6" stroke="#e63946" stroke-width="2"/>
+
+                        <!-- Ovario derecho -->
+                        <ellipse cx="120" cy="5" rx="15" ry="10" fill="#f8a6a6" stroke="#e63946" stroke-width="2"/>
+                    </g>
+
+                    <!-- Lupa sobre el cérvix -->
+                    <g transform="translate(300, 250) scale(0.8)">
+                        <circle cx="0" cy="0" r="50" fill="none" stroke="#333" stroke-width="3" fill-opacity="0.2"/>
+                        <line x1="35" y1="35" x2="80" y2="80" stroke="#333" stroke-width="5"/>
+                        <rect x="75" y="75" width="30" height="10" fill="#333" transform="rotate(45, 80, 80)"/>
+                    </g>
+
+                    <!-- Etiquetas -->
+                    <text x="150" y="350" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#1a3a8f">TEJIDO NORMAL</text>
+                    <text x="450" y="350" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#1a3a8f">TEJIDO ANORMAL</text>
+                </svg>
+            </div>
+        </section>
+
+        <!-- Secciones de acción -->
+        <section class="action-section">
+            <!-- Tarjeta para crear expediente clínico -->
+            <div class="action-card">
+                <h3>Expediente Clínico Digital</h3>
+                <p>Cree y gestione expedientes clínicos digitales siguiendo las normas NOM-004-SSA3-2012, NOM-014-SSA2-1994 y NOM-168-SSA1-1998 para el seguimiento integral de pacientes.</p>
+                <button class="btn" onclick="showExpedienteForm()">Crear Expediente Clínico</button>
+            </div>
+
+            <!-- Tarjeta para información sobre el cáncer -->
+            <div class="action-card">
+                <h3>Información sobre Cáncer Cervicouterino</h3>
+                <p>Acceda a información actualizada sobre el cáncer cervicouterino, factores de riesgo, prevención y tratamientos disponibles basados en evidencia científica.</p>
+                <button class="btn btn-secondary" onclick="showCancerInfo()">Conocer Más</button>
+            </div>
+        </section>
+
+        <!-- Formulario de expediente clínico (inicialmente oculto) -->
+        <div id="expedienteForm" class="form-container" style="display: none;">
+            <h2>Expediente Clínico Digital</h2>
+            <form id="clinicalRecordForm" action="procesar_expediente.php" method="POST">
+                <!-- Sección de datos de identificación -->
+                <div class="form-section">
+                    <h3>1. Datos de Identificación del Paciente</h3>
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="nombreCompleto">Nombre Completo:</label>
+                                <input type="text" id="nombreCompleto" name="nombreCompleto" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="fechaNacimiento">Fecha de Nacimiento:</label>
+                                <input type="date" id="fechaNacimiento" name="fechaNacimiento" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="curp">CURP:</label>
+                                <input type="text" id="curp" name="curp" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="telefono">Teléfono:</label>
+                                <input type="tel" id="telefono" name="telefono" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="estadoCivil">Estado Civil:</label>
+                                <select id="estadoCivil" name="estadoCivil" class="form-control">
+                                    <option value="">Seleccione...</option>
+                                    <option value="Soltera">Soltera</option>
+                                    <option value="Casada">Casada</option>
+                                    <option value="Divorciada">Divorciada</option>
+                                    <option value="Viuda">Viuda</option>
+                                    <option value="Unión Libre">Unión Libre</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="ocupacion">Ocupación:</label>
+                                <input type="text" id="ocupacion" name="ocupacion" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección de antecedentes gineco-obstétricos -->
+                <div class="form-section">
+                    <h3>2. Antecedentes Gineco-Obstétricos</h3>
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="edadMenstruacion">Edad de primera menstruación:</label>
+                                <input type="number" id="edadMenstruacion" name="edadMenstruacion" class="form-control" min="8" max="20">
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="numEmbarazos">Número de embarazos:</label>
+                                <input type="number" id="numEmbarazos" name="numEmbarazos" class="form-control" min="0">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="numPartos">Número de partos:</label>
+                                <input type="number" id="numPartos" name="numPartos" class="form-control" min="0">
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="numAbortos">Número de abortos:</label>
+                                <input type="number" id="numAbortos" name="numAbortos" class="form-control" min="0">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="edadInicioSexual">Edad de inicio de vida sexual activa:</label>
+                                <input type="number" id="edadInicioSexual" name="edadInicioSexual" class="form-control" min="10">
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label>Uso de anticonceptivos hormonales:</label>
+                                <div>
+                                    <input type="radio" id="anticonceptivosSi" name="anticonceptivos" value="Si">
+                                    <label for="anticonceptivosSi">Sí</label>
+                                    <input type="radio" id="anticonceptivosNo" name="anticonceptivos" value="No" checked>
+                                    <label for="anticonceptivosNo">No</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label>Menopausia:</label>
+                                <div>
+                                    <input type="radio" id="menopausiaSi" name="menopausia" value="Si" onclick="toggleEdadMenopausia(true)">
+                                    <label for="menopausiaSi">Sí</label>
+                                    <input type="radio" id="menopausiaNo" name="menopausia" value="No" checked onclick="toggleEdadMenopausia(false)">
+                                    <label for="menopausiaNo">No</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="edadMenopausia">Edad de menopausia:</label>
+                                <input type="number" id="edadMenopausia" name="edadMenopausia" class="form-control" min="35" max="60" disabled>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección de antecedentes personales patológicos -->
+                <div class="form-section">
+                    <h3>3. Antecedentes Personales Patológicos</h3>
+                    <div class="form-group">
+                        <label for="enfermedadesCronicas">Enfermedades crónicas:</label>
+                        <textarea id="enfermedadesCronicas" name="enfermedadesCronicas" class="form-control" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Infección previa por VPH:</label>
+                        <div>
+                            <input type="radio" id="vphSi" name="vph" value="Si">
+                            <label for="vphSi">Sí</label>
+                            <input type="radio" id="vphNo" name="vph" value="No" checked>
+                            <label for="vphNo">No</label>
+                            <input type="radio" id="vphDesconocido" name="vph" value="Desconocido">
+                            <label for="vphDesconocido">Desconocido</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="otrasETS">Otras ETS:</label>
+                        <input type="text" id="otrasETS" name="otrasETS" class="form-control">
+                    </div>
+                </div>
+
+                <!-- Sección de antecedentes familiares -->
+                <div class="form-section">
+                    <h3>4. Antecedentes Familiares</h3>
+                    <div class="form-group">
+                        <label for="antecedentesOncologicos">Antecedentes oncológicos en familiares de primer grado:</label>
+                        <textarea id="antecedentesOncologicos" name="antecedentesOncologicos" class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
+
+                <!-- Sección de historial de tamizaje -->
+                <div class="form-section">
+                    <h3>5. Historial de Tamizaje y Diagnóstico</h3>
+                    <div class="form-group">
+                        <label for="ultimoPapanicolaou">Fecha del último Papanicolaou:</label>
+                        <input type="date" id="ultimoPapanicolaou" name="ultimoPapanicolaou" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="resultadoPapanicolaou">Resultado del último Papanicolaou:</label>
+                        <select id="resultadoPapanicolaou" name="resultadoPapanicolaou" class="form-control">
+                            <option value="">Seleccione...</option>
+                            <option value="Normal">Normal</option>
+                            <option value="ASCUS">ASCUS</option>
+                            <option value="LSIL">LSIL</option>
+                            <option value="HSIL">HSIL</option>
+                            <option value="ASC-H">ASC-H</option>
+                            <option value="AGC">AGC</option>
+                            <option value="Carcinoma">Carcinoma</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="pruebaVPH">Resultado de prueba de VPH:</label>
+                        <select id="pruebaVPH" name="pruebaVPH" class="form-control">
+                            <option value="">Seleccione...</option>
+                            <option value="Negativo">Negativo</option>
+                            <option value="Positivo alto riesgo">Positivo alto riesgo</option>
+                            <option value="Positivo bajo riesgo">Positivo bajo riesgo</option>
+                            <option value="No realizada">No realizada</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Sección de carga de archivos -->
+                <div class="form-section">
+                    <h3>6. Documentación y Estudios</h3>
+                    <div class="file-upload-section">
+                        <p>Subir imágenes de estudios:</p>
+                        <div class="file-upload-container" onclick="document.getElementById('fileUpload').click()">
+                            <div class="file-upload-icon">📁</div>
+                            <p>Haga clic para seleccionar archivos o arrastre y suelte aquí</p>
+                            <input type="file" id="fileUpload" name="fileUpload[]" multiple style="display: none;" accept="image/*,.pdf">
+                        </div>
+                        <div id="fileList" style="margin-top: 15px;"></div>
+                    </div>
+                </div>
+
+                <!-- Sección de consentimiento -->
+                <div class="consent-section">
+                    <h3>7. Consentimiento de Datos</h3>
+                    <div class="form-group">
+                        <input type="checkbox" id="consentimiento" name="consentimiento" class="consent-checkbox" required>
+                        <label for="consentimiento">Acepto compartir mis datos para fines médicos y de investigación. Entiendo que mis datos personales serán tratados con confidencialidad y no serán de dominio público.</label>
+                    </div>
+                </div>
+
+                <!-- Botones de acción del formulario -->
+                <div style="margin-top: 30px; text-align: center;">
+                    <button type="submit" class="btn">Guardar Expediente</button>
+                    <button type="button" class="btn btn-secondary" style="margin-left: 15px;" onclick="hideExpedienteForm()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Sección de información sobre cáncer (inicialmente oculta) -->
+        <div id="cancerInfo" class="form-container" style="display: none;">
+            <h2>Información sobre Cáncer Cervicouterino</h2>
+
+            <div class="form-section">
+                <h3>¿Qué es el Cáncer Cervicouterino?</h3>
+                <p>El cáncer cervicouterino es una enfermedad en la cual se encuentra células cancerosas (malignas) en los tejidos del cuello uterino. Es una de las principales causas de muerte por cáncer en mujeres a nivel mundial, especialmente en países en desarrollo.</p>
+                <p>Este tipo de cáncer se desarrolla lentamente, comenzando como una condición precancerosa llamada displasia. Esta condición se puede detectar fácilmente mediante una prueba de Papanicolaou y es 100% tratable.</p>
+            </div>
+
+            <div class="form-section">
+                <h3>Factores de Riesgo</h3>
+                <ul style="padding-left: 20px; line-height: 1.6;">
+                    <li><strong>Infección por VPH:</strong> La causa principal del cáncer cervicouterino es la infección persistente por ciertos tipos del Virus del Papiloma Humano (VPH), especialmente los tipos 16 y 18.</li>
+                    <li><strong>Inicio temprano de actividad sexual:</strong> Comenzar la vida sexual a una edad temprana aumenta el riesgo.</li>
+                    <li><strong>Múltiples parejas sexuales:</strong> Tener muchas parejas sexuales o tener relaciones con alguien que ha tenido muchas parejas sexuales.</li>
+                    <li><strong>Sistema inmunológico debilitado:</strong> Las mujeres con VIH o que toman medicamentos que suprimen el sistema inmunológico.</li>
+                    <li><strong>Tabaquismo:</strong> Las mujeres que fuman tienen el doble de probabilidades de desarrollar cáncer cervicouterino.</li>
+                    <li><strong>Uso prolongado de anticonceptivos orales:</strong> El uso de píldoras anticonceptivas por más de 5 años puede aumentar ligeramente el riesgo.</li>
+                    <li><strong>Múltiples embarazos:</strong> Tener muchos embarazos a término.</li>
+                </ul>
+            </div>
+
+            <div class="form-section">
+                <h3>Prevención</h3>
+                <p>La prevención del cáncer cervicouterino se basa en tres estrategias principales:</p>
+                <ol style="padding-left: 20px; line-height: 1.6;">
+                    <li><strong>Vacunación contra el VPH:</strong> La vacuna contra el VPH protege contra los tipos de VPH que causan la mayoría de los cánceres cervicouterinos. Se recomienda para niñas y niños de 11 a 12 años, aunque puede administrarse desde los 9 hasta los 26 años.</li>
+                    <li><strong>Pruebas de detección regulares:</strong> Las pruebas de Papanicolaou y de VPH pueden detectar cambios celulares precancerosos antes de que se conviertan en cáncer.</li>
+                    <li><strong>Prácticas sexuales seguras:</strong> El uso de preservativos durante las relaciones sexuales puede reducir el riesgo de infección por VPH.</li>
+                </ol>
+            </div>
+
+            <div class="form-section">
+                <h3>Detección Temprana</h3>
+                <p>La detección temprana del cáncer cervicouterino es crucial para un tratamiento exitoso. Se recomienda:</p>
+                <ul style="padding-left: 20px; line-height: 1.6;">
+                    <li>Prueba de Papanicolaou cada 3 años para mujeres de 21 a 29 años.</li>
+                    <li>Prueba de Papanicolaou y prueba de VPH (co-prueba) cada 5 años, o prueba de Papanicolaou sola cada 3 años para mujeres de 30 a 65 años.</li>
+                    <li>Las mujeres con factores de riesgo pueden necesitar pruebas más frecuentes.</li>
+                </ul>
+            </div>
+
+            <!-- Botón para volver -->
+            <div style="margin-top: 30px; text-align: center;">
+                <button type="button" class="btn" onclick="hideCancerInfo()">Volver</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pie de página -->
+    <footer>
+        <p>CerviScan - Sistema Integral para la Detección Temprana de Cáncer Cervicouterino</p>
+        <p>&copy; 2025 - Todos los derechos reservados</p>
+    </footer>
+
+    <!-- Scripts de JavaScript -->
+    <script>
+        // Función para mostrar el formulario de expediente clínico
+        function showExpedienteForm() {
+            document.getElementById('expedienteForm').style.display = 'block';
+            document.getElementById('cancerInfo').style.display = 'none';
+            window.scrollTo(0, document.getElementById('expedienteForm').offsetTop - 20);
+        }
+
+        // Función para ocultar el formulario de expediente clínico
+        function hideExpedienteForm() {
+            document.getElementById('expedienteForm').style.display = 'none';
+        }
+
+        // Función para mostrar información sobre el cáncer
+        function showCancerInfo() {
+            document.getElementById('cancerInfo').style.display = 'block';
+            document.getElementById('expedienteForm').style.display = 'none';
+            window.scrollTo(0, document.getElementById('cancerInfo').offsetTop - 20);
+        }
+
+        // Función para ocultar información sobre el cáncer
+        function hideCancerInfo() {
+            document.getElementById('cancerInfo').style.display = 'none';
+        }
+
+        // Función para habilitar/deshabilitar el campo de edad de menopausia
+        function toggleEdadMenopausia(enabled) {
+            document.getElementById('edadMenopausia').disabled = !enabled;
+            if (!enabled) {
+                document.getElementById('edadMenopausia').value = '';
+            }
+        }
+
+        // Función para manejar la carga de archivos
+        document.getElementById('fileUpload').addEventListener('change', function(e) {
+            const fileList = document.getElementById('fileList');
+            fileList.innerHTML = '';
+
+            for (let i = 0; i < this.files.length; i++) {
+                const file = this.files[i];
+                const fileItem = document.createElement('div');
+                fileItem.style.margin = '5px 0';
+
+                const fileName = document.createElement('span');
+                fileName.textContent = file.name;
+
+                const fileSize = document.createElement('span');
+                fileSize.textContent = ' (' + formatFileSize(file.size) + ')';
+                fileSize.style.color = '#6c757d';
+
+                fileItem.appendChild(fileName);
+                fileItem.appendChild(fileSize);
+                fileList.appendChild(fileItem);
+            }
+        });
+
+        // Función para formatear el tamaño del archivo
+        function formatFileSize(bytes) {
+            if (bytes < 1024) return bytes + ' bytes';
+            else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+            else return (bytes / 1048576).toFixed(1) + ' MB';
+        }
+
+        // Función para manejar el envío del formulario
+        document.getElementById('clinicalRecordForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Aquí iría el código para enviar los datos al servidor
+            // Por ahora, solo mostraremos un mensaje de éxito
+            alert('Expediente clínico guardado correctamente.');
+            hideExpedienteForm();
+        });
+    </script>
+</body>
+</html>
